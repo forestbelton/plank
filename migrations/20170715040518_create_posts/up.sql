@@ -1,8 +1,8 @@
 CREATE TABLE posts(
-    id BIGSERIAL PRIMARY KEY,
-    uuid UUID NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY NOT NULL,
+    uuid TEXT NOT NULL UNIQUE,
     author TEXT NOT NULL,
-    create_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    create_date TIMESTAMP NOT NULL,
     body TEXT NOT NULL,
     attachment TEXT
 );
