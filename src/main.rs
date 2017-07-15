@@ -1,6 +1,10 @@
 #![feature(proc_macro)]
+
 #[macro_use]
 extern crate serde_derive;
+
+#[macro_use]
+extern crate diesel_codegen;
 
 extern crate diesel;
 extern crate r2d2;
