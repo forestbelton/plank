@@ -1,5 +1,2 @@
-pub mod schema {
-    infer_schema!("dotenv:DATABASE_URL");
-}
-
+pub mod schema;
 pub mod post;
