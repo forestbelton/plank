@@ -1,0 +1,17 @@
+[package]
+name = "plank"
+version = "0.1.0"
+authors = ["Forest Belton <forest@homolo.gy>"]
+
+[dependencies]
+# web framework
+iron = "0.5.1"
+router = "0.5.1"
+
+# environment variables
+envy = "0.3.1"
+dotenv = "0.10.1"
+
+# (de)serialization
+serde = "1.0.10"
+serde_derive = "1.0.10"
