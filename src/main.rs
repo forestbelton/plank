@@ -15,6 +15,6 @@ fn main() {
     let app_config = config::get_config();
 
     let r2d2_config = r2d2::Config::default();
-    let manager = ConnectionManager::<SqliteConnection>::new(app_config.database);
+    let manager = ConnectionManager::<SqliteConnection>::new(app_config.database_url);
     let pool = r2d2::Pool::new(r2d2_config, manager).expect("failed to create database pool");
 }
