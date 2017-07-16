@@ -1,3 +1,8 @@
 language: rust
 rust:
     - nightly
+script:
+    - cargo install diesel_cli
+    - diesel migration run
+    - cargo build --verbose
+    - cargo test --verbose
