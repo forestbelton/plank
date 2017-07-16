@@ -15,6 +15,7 @@ extern crate router;
 mod config;
 mod model;
 mod pool;
+mod route;
 
 use pool::ConnectionPool;
 use model::post::*;
@@ -25,17 +26,12 @@ use diesel::sqlite::SqliteConnection;
 use r2d2_diesel::ConnectionManager;
 use iron::{Iron, Chain};
 
-fn router() -> router::Router {
-    let mut router = router::Router::new();
-    return router;
-}
-
 fn main() {
     let app_config = config::get_config();
     let manager = ConnectionManager::<SqliteConnection>::new(app_config.database_url);
     let pool = ConnectionPool::new(manager);
 
-    let mut chain = Chain::new(router());
+    let mut chain = Chain::new(route::router());
     chain.link_before(pool);
 
     Iron::new(chain).http(app_config.app_url).unwrap();
