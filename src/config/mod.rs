@@ -4,7 +4,8 @@ extern crate serde;
 
 #[derive(Deserialize, Debug)]
 pub struct PlankConfiguration {
-    pub database_url: String
+    pub app_url: String,
+    pub database_url: String,
 }
 
 pub fn get_config() -> PlankConfiguration {

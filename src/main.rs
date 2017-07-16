@@ -7,31 +7,44 @@
 #[macro_use] extern crate diesel;
 
 extern crate chrono;
-extern crate r2d2;
+extern crate iron;
 extern crate r2d2_diesel;
 extern crate uuid;
+extern crate router;
 
 mod config;
 mod model;
+mod pool;
 
+use pool::ConnectionPool;
 use model::post::*;
 
-use chrono::prelude::*;
-use diesel::prelude::*;
+//use chrono::prelude::*;
+//use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
 use r2d2_diesel::ConnectionManager;
-use uuid::Uuid;
+use iron::{Iron, Chain};
+
+fn router() -> router::Router {
+    let mut router = router::Router::new();
+    return router;
+}
 
 fn main() {
-    use model::schema::posts::dsl::*;
-
     let app_config = config::get_config();
-
-    let r2d2_config = r2d2::Config::default();
     let manager = ConnectionManager::<SqliteConnection>::new(app_config.database_url);
-    let pool = r2d2::Pool::new(r2d2_config, manager).expect("failed to create database pool");
+    let pool = ConnectionPool::new(manager);
 
+    let mut chain = Chain::new(router());
+    chain.link_before(pool);
+
+    Iron::new(chain).http(app_config.app_url).unwrap();
+
+    //let pool = ConnectionPool::<SqliteConnection>new(manager);
+/*
+    use model::schema::posts::dsl::*;
     let conn = pool.get().unwrap();
+
     let ps = posts
         .load::<Post>(&*conn)
         .expect("error loading posts");
@@ -48,4 +61,5 @@ fn main() {
     };
 
     diesel::insert(&new_post).into(posts).execute(&*conn).unwrap();
+*/
 }
