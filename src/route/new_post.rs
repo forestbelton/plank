@@ -10,6 +10,7 @@ use diesel::prelude::*;
 use iron::prelude::{IronResult, Request, Response};
 use uuid::Uuid;
 
+use diesel::result::Error;
 use diesel::sqlite::SqliteConnection;
 
 pub fn handler(req: &mut Request) -> IronResult<Response> {
@@ -26,6 +27,10 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         attachment: None,
     };
 
-    diesel::insert(&new_post).into(posts).execute(sql_conn).unwrap();
+    let _ = sql_conn.transaction::<_, Error, _>(||{
+        diesel::insert(&new_post).into(posts).execute(sql_conn).unwrap();
+        return Ok(());
+    });
+
     Ok(Response::with((iron::status::Ok, "")))
 }
