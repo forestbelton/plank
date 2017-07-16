@@ -22,19 +22,9 @@ pub struct Post {
 #[table_name="posts"]
 pub struct NewPost<'a> {
     pub uuid: &'a str,
+    pub reply_uuid: Option<&'a str>,
     pub author: &'a str,
     pub create_date: NaiveDateTime,
     pub body: &'a str,
     pub attachment: Option<&'a str>,
-}
-
-#[derive(Insertable)]
-#[table_name="posts"]
-pub struct NewReply<'a> {
-    pub uuid: &'a str,
-    pub reply_uuid: &'a str,
-    pub author: &'a str,
-    pub create_date: NaiveDateTime,
-    pub body: &'a str,
-    pub attachment: Option<&'a str>
 }

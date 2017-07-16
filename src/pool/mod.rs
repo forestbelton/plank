@@ -3,18 +3,21 @@ extern crate r2d2;
 extern crate r2d2_diesel;
 extern crate diesel;
 
+use diesel::sqlite::SqliteConnection;
 use iron::{BeforeMiddleware, AfterMiddleware, typemap};
 use iron::prelude::*;
+use self::r2d2::PooledConnection;
+use self::r2d2::Pool;
 use r2d2_diesel::ConnectionManager;
 
-pub struct ConnectionPool<T: 'static + diesel::Connection> {
-    pub pool: r2d2::Pool<ConnectionManager<T>>,
+pub struct ConnectionPool {
+    pool: Pool<ConnectionManager<SqliteConnection>>
 }
 
-impl<T: diesel::Connection> ConnectionPool<T> {
-    pub fn new(manager: ConnectionManager<T>) -> ConnectionPool<T> {
-        let r2d2_config = r2d2::Config::default();
-        let pool = r2d2::Pool::new(r2d2_config, manager).expect("failed to create database pool");
+impl ConnectionPool {
+    pub fn new(manager: ConnectionManager<SqliteConnection>) -> ConnectionPool {
+        let config = r2d2::Config::default();
+        let pool = Pool::new(config, manager).expect("failed to create database pool");
 
         return ConnectionPool {
             pool: pool
@@ -22,18 +25,22 @@ impl<T: diesel::Connection> ConnectionPool<T> {
     }
 }
 
-impl<T: diesel::Connection> typemap::Key for ConnectionPool<T> {
-    type Value = T;
+impl typemap::Key for ConnectionPool {
+    type Value = PooledConnection<ConnectionManager<SqliteConnection>>;
 }
 
-impl<T: diesel::Connection> BeforeMiddleware for ConnectionPool<T> {
-    fn before(&self, _: &mut Request) -> IronResult<()> {
-        return Ok(());
+impl BeforeMiddleware for ConnectionPool {
+    fn before(&self, req: &mut Request) -> IronResult<()> {
+        let conn = self.pool.get().unwrap();
+
+        req.extensions.insert::<ConnectionPool>(conn);
+        Ok(())
     }
 }
 
-impl<T: diesel::Connection> AfterMiddleware for ConnectionPool<T> {
-    fn after(&self, _: &mut Request, resp: Response) -> IronResult<Response> {
-        return Ok(resp);
+impl AfterMiddleware for ConnectionPool {
+    fn after(&self, req: &mut Request, resp: Response) -> IronResult<Response> {
+        req.extensions.remove::<ConnectionPool>();
+        Ok(resp)
     }
 }
