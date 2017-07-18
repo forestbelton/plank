@@ -19,6 +19,7 @@ mod middleware;
 mod model;
 mod route;
 
+use middleware::log::RequestLogger;
 use middleware::pool::ConnectionPool;
 
 use diesel::sqlite::SqliteConnection;
@@ -42,10 +43,15 @@ fn main() {
     let app_config = config::get_config();
     let manager = ConnectionManager::<SqliteConnection>::new(app_config.database_url.clone());
 
+    let logger = RequestLogger;
     let pool = ConnectionPool::new(manager);
 
     let mut chain = Chain::new(route::router());
+
+    chain.link_before(logger);
     chain.link_before(pool);
+
+    chain.link_after(logger);
 
     info!("Starting server at {}", app_config.app_url);
     Iron::new(chain).http(app_config.app_url).unwrap();
