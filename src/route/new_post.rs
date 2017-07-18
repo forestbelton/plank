@@ -2,7 +2,7 @@ extern crate iron;
 
 use model::post::*;
 use model::schema::posts::dsl::*;
-use pool::ConnectionPool;
+use middleware::pool::ConnectionPool;
 
 use chrono::prelude::*;
 use diesel;

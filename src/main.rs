@@ -15,11 +15,11 @@ extern crate uuid;
 extern crate router;
 
 mod config;
+mod middleware;
 mod model;
-mod pool;
 mod route;
 
-use pool::ConnectionPool;
+use middleware::pool::ConnectionPool;
 
 use diesel::sqlite::SqliteConnection;
 use r2d2_diesel::ConnectionManager;
