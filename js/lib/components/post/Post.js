@@ -8,7 +8,8 @@ import './Post.css';
 const Post = (props) => {
     const date = moment(props.create_date).format('[on] DD MMM YYYY [at] HH:mm:ss');
 
-    return (<div className="Post">
+    return (
+    <div className="Post">
         Posted by <div className="Post-Author">{props.author}</div>
         &nbsp;<div className="Post-CreateDate">{date}</div>
         <div className="Post-ID">{props.uuid}</div>
