@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parse, format } from 'date-fns';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import './Post.css';
 
 const Post = (props) => {
     const className = props.className ? `Post ${props.className}` : 'Post';
-    const date = moment(props.create_date).format('[on] DD MMM YYYY [at] HH:mm:ss');
+    const date = format(parse(props.create_date), '[on] DD MMM YYYY [at] HH:mm:ss');
 
     return (
     <div className={className}>
