@@ -21,10 +21,10 @@ const MAX_ATTACH_SIZE: usize = 256;
 pub fn handler(req: &mut Request) -> IronResult<Response> {
     let params = req.get::<Params>().unwrap();
 
-    let _uuid = Uuid::new_v4().hyphenated().to_string();
-
     // TODO: please tell me there is an iron Params-based form
     // validation library out there
+
+    info!("Validating input for new post");
 
     let _body = match params.find(&["body"]) {
         Some(&Value::String(ref value)) => value,
@@ -51,6 +51,8 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         _ => None
     };*/
 
+    let _uuid = Uuid::new_v4().hyphenated().to_string();
+
     let new_post = NewPost {
         uuid: &_uuid,
         reply_id: None,
@@ -59,6 +61,8 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         author: &_author,
         attachment: None
     };
+
+    info!("Creating new post: {:?}", new_post);
 
     {
         let conn = req.extensions.get::<ConnectionPool>().unwrap();

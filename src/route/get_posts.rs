@@ -17,6 +17,8 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
     let conn = req.extensions.get::<ConnectionPool>().unwrap();
     let sql_conn : &SqliteConnection = &*conn;
 
+    info!("Fetching latest post IDs");
+
     let latest_post_ids = posts::table
         .select(posts::id)
         .filter(posts::reply_id.is_null())
@@ -25,7 +27,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         .load::<i32>(&*sql_conn);
 
     if latest_post_ids.is_err() {
-        error!("failed to fetch post IDs: {}", latest_post_ids.unwrap_err());
+        error!("Failed to fetch post IDs: {}", latest_post_ids.unwrap_err());
         return Ok(Response::with((iron::status::InternalServerError, "failed to fetch posts")));
     }
 
@@ -40,7 +42,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         };
     }
 
-    info!("Fetching posts; ids = [{}]", formatted_ids);
+    info!("Fetching posts and replies for IDs = [{}]", formatted_ids);
     let id_clause = format!("id IN ({}) OR reply_id IN ({})", formatted_ids, formatted_ids);
 
     let posts_and_replies = posts::table
@@ -53,7 +55,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
             Response::with((iron::status::Ok, post_json))
         },
         Err(err) => {
-            error!("failed to fetch posts: {}", err);
+            error!("Failed to fetch posts: {}", err);
             Response::with((iron::status::InternalServerError, "failed to fetch posts"))
         }
     };

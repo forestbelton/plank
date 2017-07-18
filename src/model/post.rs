@@ -19,7 +19,7 @@ pub struct Post {
     pub reply_id: Option<i32>,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Debug)]
 #[table_name="posts"]
 pub struct NewPost<'a> {
     pub uuid: &'a str,
