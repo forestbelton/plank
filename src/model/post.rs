@@ -1,13 +1,14 @@
 extern crate chrono;
 extern crate diesel;
 extern crate diesel_codegen;
+extern crate serde;
 
 use self::chrono::naive::NaiveDateTime;
 use std::option::Option;
 
 use model::schema::posts;
 
-#[derive(Queryable, Debug)]
+#[derive(Serialize, Queryable, Debug)]
 pub struct Post {
     pub id: i32,
     pub uuid: String,

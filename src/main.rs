@@ -56,10 +56,4 @@ fn main() {
 
     info!("Starting server at {}", app_config.app_url);
     Iron::new(chain).http(app_config.app_url).unwrap();
-
-/*
-    let ps = posts
-        .load::<Post>(&*conn)
-        .expect("error loading posts");
-*/
 }
