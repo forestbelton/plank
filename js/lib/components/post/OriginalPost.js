@@ -6,13 +6,13 @@ import Post from './Post';
 
 const OriginalPost = props => {
     const replies = props.replies.map(reply =>
-        <Post key={reply.uuid}>
+        <Post key={reply.uuid} {...reply}>
             {reply.body}
         </Post>
     );
 
     return (
-    <Post>
+    <Post className="OriginalPost" {...props}>
         {props.body}
         <div className="Post-Replies">
             {replies}
@@ -24,7 +24,7 @@ OriginalPost.propTypes = Object.assign(
     {},
     Post.propTypes,
     {
-        replies: PropTypes.arrayOf(Post.propTypes).isRequired
+        replies: PropTypes.arrayOf(PropTypes.shape(Post.propTypes)).isRequired
     }
 );
 

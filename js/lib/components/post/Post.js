@@ -6,10 +6,11 @@ import PropTypes from 'prop-types';
 import './Post.css';
 
 const Post = (props) => {
+    const className = props.className ? `Post ${props.className}` : 'Post';
     const date = moment(props.create_date).format('[on] DD MMM YYYY [at] HH:mm:ss');
 
     return (
-    <div className="Post">
+    <div className={className}>
         Posted by <div className="Post-Author">{props.author}</div>
         &nbsp;<div className="Post-CreateDate">{date}</div>
         <div className="Post-ID">{props.uuid}</div>
@@ -20,6 +21,7 @@ const Post = (props) => {
 };
 
 Post.propTypes = {
+    className: PropTypes.string,
     uuid: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     create_date: PropTypes.string.isRequired,
