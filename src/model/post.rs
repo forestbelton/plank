@@ -16,14 +16,14 @@ pub struct Post {
     pub create_date: NaiveDateTime,
     pub body: String,
     pub attachment: Option<String>,
-    pub reply_uuid: Option<String>,
+    pub reply_id: Option<i32>,
 }
 
 #[derive(Insertable)]
 #[table_name="posts"]
 pub struct NewPost<'a> {
     pub uuid: &'a str,
-    pub reply_uuid: Option<&'a str>,
+    pub reply_id: Option<i32>,
     pub author: &'a str,
     pub create_date: NaiveDateTime,
     pub body: &'a str,

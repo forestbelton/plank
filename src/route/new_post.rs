@@ -53,7 +53,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
 
     let new_post = NewPost {
         uuid: &_uuid,
-        reply_uuid: None,
+        reply_id: None,
         create_date: Utc::now().naive_utc(),
         body: &_body,
         author: &_author,
