@@ -28,7 +28,7 @@ impl AfterMiddleware for RequestLogger {
         let start = req.extensions.get::<RequestLogger>().unwrap();
         let elapsed = end.signed_duration_since(*start);
 
-        info!("{} {} {} {} {}ms", req.remote_addr, req.method, req.url, resp.status.unwrap(), elapsed);
+        info!("{} {} {} {} {}", req.remote_addr.ip(), req.method, req.url, resp.status.unwrap(), elapsed);
         Ok(resp)
     }
 }
