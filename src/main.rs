@@ -9,10 +9,12 @@
 extern crate chrono;
 extern crate fern;
 extern crate iron;
+extern crate mount;
 extern crate params;
 extern crate r2d2;
 extern crate r2d2_diesel;
 extern crate router;
+extern crate staticfile;
 extern crate uuid;
 
 mod config;
@@ -23,6 +25,10 @@ mod route;
 use middleware::log::RequestLogger;
 use middleware::pool::ConnectionPool;
 
+use mount::Mount;
+use staticfile::Static;
+use std::env;
+use std::path::Path;
 use diesel::sqlite::SqliteConnection;
 use r2d2_diesel::ConnectionManager;
 use iron::{Iron, Chain};
@@ -47,12 +53,22 @@ fn main() {
     let logger = RequestLogger;
     let pool = ConnectionPool::new(manager);
 
-    let mut chain = Chain::new(route::router());
+    // TODO: Move static path into configuration
+    let mut mount = Mount::new();
+
+    mount
+        .mount("/api", route::router())
+        .mount("/", Static::new(Path::new("static/")));
+
+    let mut chain = Chain::new(mount);
 
     chain.link_before(logger);
     chain.link_before(pool);
 
     chain.link_after(logger);
+
+    let cwd = env::current_dir().unwrap();
+    info!("Current directory: {}", cwd.display());
 
     info!("Starting server at {}", app_config.app_url);
     Iron::new(chain).http(app_config.app_url).unwrap();

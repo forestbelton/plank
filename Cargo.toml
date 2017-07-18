@@ -8,6 +8,8 @@ authors = ["Forest Belton <forest@homolo.gy>"]
 iron = "0.5.1"
 router = "0.5.1"
 params = "0.6.0"
+mount = "0.3.0"
+staticfile = "0.4.0"
 
 # environment variables
 envy = "0.3.1"
