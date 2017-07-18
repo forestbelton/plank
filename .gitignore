@@ -1,3 +1,5 @@
 /target/
 **/*.rs.bk
 plank.db
+js/node_modules/
+static/bundle.js
