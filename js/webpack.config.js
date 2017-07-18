@@ -1,4 +1,5 @@
 var path = require('path');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: ['whatwg-fetch', './index.js'],
@@ -18,5 +19,8 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             }
         ]
-    }
+    },
+    plugins: [
+        new UglifyJSPlugin()
+    ]
 };
