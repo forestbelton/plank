@@ -17,6 +17,7 @@ pub struct Post {
     pub body: String,
     pub attachment: Option<String>,
     pub reply_id: Option<i32>,
+    pub source_addr: String
 }
 
 #[derive(Insertable, Debug)]
@@ -28,4 +29,5 @@ pub struct NewPost<'a> {
     pub create_date: NaiveDateTime,
     pub body: &'a str,
     pub attachment: Option<&'a str>,
+    pub source_addr: &'a str
 }

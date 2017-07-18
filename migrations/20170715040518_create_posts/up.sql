@@ -4,7 +4,10 @@ CREATE TABLE posts(
     author TEXT NOT NULL,
     create_date TIMESTAMP NOT NULL,
     body TEXT NOT NULL,
-    attachment TEXT
+    attachment TEXT,
+    reply_id INTEGER REFERENCES posts(id),
+    source_addr TEXT NOT NULL
 );
 
 CREATE INDEX posts_uuid_idx ON posts(uuid);
+CREATE INDEX posts_reply_id_idx ON posts (reply_id);

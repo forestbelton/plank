@@ -52,6 +52,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
     };*/
 
     let _uuid = Uuid::new_v4().hyphenated().to_string();
+    let _source_addr = req.remote_addr.ip().to_string();
 
     let new_post = NewPost {
         uuid: &_uuid,
@@ -59,7 +60,8 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         create_date: Utc::now().naive_utc(),
         body: &_body,
         author: &_author,
-        attachment: None
+        attachment: None,
+        source_addr: &_source_addr,
     };
 
     info!("Creating new post: {:?}", new_post);
