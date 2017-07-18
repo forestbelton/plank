@@ -1,0 +1,31 @@
+.Post {
+    max-width: 600px;
+}
+
+.Post-Author, .Post-CreateDate, .Post-ID {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.Post-Author {
+    color: #16a085;
+    font-weight: bold;
+}
+
+.Post-ID:before {
+    content: "#";
+}
+
+.Post-ID {
+    color: #95a5a6;
+    font-size: 14px;
+    position: relative;
+    float: right;
+    text-decoration: none;
+}
+
+.Post-Content {
+    border-top: 2px solid #2c3e50;
+    padding-top: 15px;
+    margin-top: 10px;
+}
