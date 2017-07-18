@@ -26,7 +26,7 @@ impl AfterMiddleware for RequestLogger {
     fn after(&self, req: &mut Request, resp: Response) -> IronResult<Response> {
         let end = Utc::now();
         let start = req.extensions.get::<RequestLogger>().unwrap();
-        let elapsed = end.signed_duration_since(*start).num_milliseconds();
+        let elapsed = end.signed_duration_since(*start);
 
         info!("{} {} {} {} {}ms", req.remote_addr, req.method, req.url, resp.status.unwrap(), elapsed);
         Ok(resp)

@@ -9,10 +9,11 @@
 extern crate chrono;
 extern crate fern;
 extern crate iron;
+extern crate params;
 extern crate r2d2;
 extern crate r2d2_diesel;
-extern crate uuid;
 extern crate router;
+extern crate uuid;
 
 mod config;
 mod middleware;
