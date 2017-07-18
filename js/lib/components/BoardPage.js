@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Api from '../api/Api';
-import FetchPosts from '../actions/FetchPosts';
+import FetchPosts from '../api/actions/FetchPosts';
 
 import OriginalPost from '../components/post/OriginalPost';
 
