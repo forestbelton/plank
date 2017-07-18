@@ -11,7 +11,7 @@ use diesel::expression::dsl::sql;
 use diesel::sqlite::SqliteConnection;
 use iron::prelude::{IronResult, Request, Response};
 
-const POST_LIMIT : i64 = 1;
+const POST_LIMIT : i64 = 20;
 
 pub fn handler(req: &mut Request) -> IronResult<Response> {
     let conn = req.extensions.get::<ConnectionPool>().unwrap();
