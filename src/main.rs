@@ -70,6 +70,8 @@ fn main() {
     let cwd = env::current_dir().unwrap();
     info!("Current directory: {}", cwd.display());
 
-    info!("Starting server at {}", app_config.app_url);
-    Iron::new(chain).http(app_config.app_url).unwrap();
+    let url = format!("0.0.0.0:{}", app_config.app_port);
+    info!("Starting server at {}", url);
+
+    Iron::new(chain).http(url).unwrap();
 }

@@ -4,7 +4,7 @@ extern crate serde;
 
 #[derive(Deserialize, Debug)]
 pub struct PlankConfiguration {
-    pub app_url: String,
+    pub app_port: String,
     pub database_url: String,
 }
 
