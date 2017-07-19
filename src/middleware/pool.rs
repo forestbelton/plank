@@ -3,6 +3,10 @@ extern crate r2d2;
 extern crate r2d2_diesel;
 extern crate diesel;
 
+use diesel::ExecuteDsl;
+use diesel::expression::dsl::sql;
+use diesel::types::Text;
+
 use diesel::sqlite::SqliteConnection;
 use iron::{BeforeMiddleware, AfterMiddleware, typemap};
 use iron::prelude::*;
@@ -33,6 +37,7 @@ impl BeforeMiddleware for ConnectionPool {
     fn before(&self, req: &mut Request) -> IronResult<()> {
         let conn = self.pool.get().unwrap();
 
+        let _ = sql::<Text>("BEGIN TRANSACTION;").execute(&*conn);
         req.extensions.insert::<ConnectionPool>(conn);
         Ok(())
     }
@@ -40,7 +45,9 @@ impl BeforeMiddleware for ConnectionPool {
 
 impl AfterMiddleware for ConnectionPool {
     fn after(&self, req: &mut Request, resp: Response) -> IronResult<Response> {
-        req.extensions.remove::<ConnectionPool>();
+        let conn = req.extensions.remove::<ConnectionPool>().unwrap();
+        let _ = sql::<Text>("COMMIT;").execute(&*conn);
+
         Ok(resp)
     }
 }
