@@ -46,10 +46,14 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         return Ok(Response::with((iron::status::BadRequest, "author too big")));
     }
 
-    /*let _attachment : Option<String> = match params.find(&["attachment"]) {
+    let _attachment : Option<&str> = match params.find(&["attachment"]) {
         Some(&Value::String(ref value)) => Some(value),
         _ => None
-    };*/
+    };
+
+    if _attachment.map(|s| s.len() > MAX_ATTACH_SIZE).unwrap_or(false) {
+        return Ok(Response::with((iron::status::BadRequest, "attachment url too big")));
+    }
 
     let _uuid = Uuid::new_v4().hyphenated().to_string();
     let _source_addr = req.remote_addr.ip().to_string();
@@ -60,7 +64,7 @@ pub fn handler(req: &mut Request) -> IronResult<Response> {
         create_date: Utc::now().naive_utc(),
         body: &_body,
         author: &_author,
-        attachment: None,
+        attachment: _attachment,
         source_addr: &_source_addr,
     };
 
