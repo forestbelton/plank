@@ -27,6 +27,10 @@ class BoardPage extends React.Component {
             return <span>Loading...</span>;
         }
 
+        if (this.state.posts.length === 0) {
+            return <span>There don't seem to be any posts here.</span>;
+        }
+
         const posts = this.state.posts.map(post =>
             <OriginalPost key={post.uuid} {...post} />);
 
